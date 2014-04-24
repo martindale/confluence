@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  form.pure-form(action="/posts", method="post")
+    input.pure-input-1(type="text", name="title")
+    textarea.pure-input-1(name="content", style="margin: 1em 0;", rows="10")
+
+    button.pure-button.pure-button-primary(type="submit") Post &raquo;

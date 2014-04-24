@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h3 search results for #{query}
+
+  each post in posts
+    include blocks/post

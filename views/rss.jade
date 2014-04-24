@@ -1,0 +1,15 @@
+doctype xml
+rss(version="2.0")
+  channel
+    title #{name}
+    //-link #{link}
+    description #{tagline}
+    atom:link(href="http://www.ericmartindale.com/feed", rel="self", type="application/rss+xml") 
+    for post in posts
+      if (post.content)
+        item
+          title #{post.title}
+          //-link #{post.permalink}
+          description #{markdown(post.content)}
+          //-guid(isPermaLink="true") #{post.permalink}
+          pubDate #{moment(post.published).format('ddd, DD MMM YYYY HH:mm:ss ZZ')}

@@ -1,0 +1,72 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+    meta(name="description", content="Eric Martindale is a relentless maker of great things.  This is something awesome he built.")
+    meta(name="google-site-verification", content="YfGZgTFMKqD_U5-xENyS7KOJ-jhD-4jiDYTl77imk5A")
+
+    title Eric Martindale | Maker of Great Things
+
+    link(rel="stylesheet", href="/css/pure.css")
+    link(rel="stylesheet", href="/css/font-awesome.css")
+    link(rel="stylesheet", href="/css/screen.css")
+
+    link(rel="alternate", href="http://www.ericmartindale.com/feed", type="application/atom+xml", title="Eric Martindale")
+
+    script(src="/js/jquery.min.js")
+    script(src="/js/bootstrap.min.js")
+    script(src="/js/maki.js")
+
+  body.pure-skin-mine
+    .pure-g-r#layout
+      .sidebar.pure-u
+        header.header
+          hgroup
+            img.brand-image(src="/img/eric-martindale-headshot.png")
+            h1.brand-title
+              a(href="/") Eric Martindale
+            h2.brand-tagline relentless maker.  改善.
+
+          nav.nav
+            ul.nav-list
+              li.nav-item
+                a.pure-button(href="/") Home
+              li.nav-item
+                a.pure-button(href="/about") About
+              li.nav-item
+                a.pure-button(href="/projects") Projects
+              if (user)
+                li.nav-item
+                  a.pure-button(href="/about") #{user.username}
+                li.nav-item
+                  a.pure-button(href="/logout") Logout
+
+            ul.nav-list.external-link-list
+              li.nav-item
+                a.pure-button.tooltipped(href="http://twitter.com/martindale", rel="me", title="Eric Martindale's Tweets on Twitter")
+                  i.fa.fa-twitter
+              li.nav-item
+                a.pure-button.tooltipped(href="http://github.com/martindale", rel="me", title="Eric Martindale's Code on GitHub")
+                  i.fa.fa-github-alt
+              li.nav-item
+                a.pure-button.tooltipped(href="http://plus.google.com/112353210404102902472", rel="me", title="Eric Martindale's Identity on Google")
+                  i.fa.fa-google-plus
+              li.nav-item
+                a.pure-button.tooltipped(href="http://www.linkedin.com/in/martindale", rel="me", title="Eric Martindale's Resume on LinkedIn")
+                  i.fa.fa-linkedin
+              li.nav-item
+                a.pure-button.tooltipped(href="http://last.fm/user/remaeus", rel="me", title="Eric Martindale's Music on Last.fm") &#9835;
+              li.nav-item
+                a.pure-button.tooltipped(href="http://www.gittip.com/martindale", rel="me", title="Eric Martindale's Income on Gittip'")
+                  i.fa.fa-gittip
+              li.nav-item
+                a.pure-button.tooltipped(href="bitcoin://131pe2ziMhusE5pbNhfKfzCgGNqhZxZwRB", rel="me", title="Eric Martindale's Wallet in BitCoin'")
+                  i.fa.fa-btc
+
+      .pure-u-1
+        .content
+          .posts
+            include blocks/flash
+
+            block content

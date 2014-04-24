@@ -1,0 +1,15 @@
+if (typeof(flash) != 'undefined')
+  .messages
+    if (typeof(flash.error) != 'undefined')
+      for error in flash.error
+        .alert.alert-error.alert-dismissable
+          button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
+          | !{error}
+    if (typeof(flash.info) != 'undefined')
+      for info in flash.info
+        .alert.alert-info.alert-dismissable
+          button.close(type="button", data-dismiss="alert") &times;
+          | !{info}
+
+.messages
+  p.alert.alert-info.alert-dismissable The new EricMartindale.com is an experiment in data aggregation, and might have a few bugs.  Feel free to explore, and then <a href="https://twitter.com/intent/tweet?text=@martindale%20">provide feedback directly to @martindale</a>.

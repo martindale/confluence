@@ -1,0 +1,60 @@
+section.post
+  header.post-header
+    img.post-avatar(src="/img/eric-martindale-headshot.png", height="48", width="48")
+
+    h2.post-title
+      a(href="#{post.permalink}") #{post.title}
+      if (post._parent)
+        |  
+        small in reply to 
+          a(href="#{post._parent.permalink}") #{post._parent.title}
+
+    p.post-meta
+      a(href="#{post.permalink}")
+        abbr.timestamp(title="#{post.published}") #{moment(post.published).format('LLLL')}
+      |  &bull; by <a href="/#{post._author.slug}">#{post._author.username}</a>
+      if (post.tags && post.tags.length)
+        //- TODO: make tag search more than a search, but actual tagging
+        |  &bull; !{post.tags.map(function(x) { return '<a href="/s/'+x+'">'+x+'</a>'; }).join(', ')}
+      if (user)
+        |  
+        a.pure-button(href="/posts/#{post._id}/edit") edit
+      |  &bull; 
+      for resource in post.resources
+        case resource.provider
+          when 'google'
+          when 'facebook'
+          when 'twitter'
+            a.pure-button(href="#{resource.uri}") #{resource.provider}
+            |  
+
+  .post-description !{post.content}
+
+  if (post.attachments && post.attachments.length)
+    h3 Attachments
+    for attachment in post.attachments
+      case attachment.type
+        when 'image'
+          a.attachment(href="#{attachment.url}")
+            img(src="#{attachment.image.url}")
+        default
+          a.attachment(href="#{attachment.url}")
+            if (attachment.image && attachment.image.url)
+              img(src="#{attachment.image.url}")
+            h4 #{attachment.title}
+            p #{attachment.description}
+
+  h3
+    a(href="#{post.permalink}#replies") #{post.replies.length} Replies
+  if (post.replies)
+    for reply in post.replies
+      if (reply._post && reply._post.title)
+        .reply
+          h4 #{reply._post.published} 
+            small posted by 
+              a(href="/#{reply._author.slug}") #{reply._author.username}
+              |  
+              for resource in reply._post.resources
+                a.pure-button(href="#{resource.uri}") #{resource.provider}
+                |  
+          p !{reply._post.content}

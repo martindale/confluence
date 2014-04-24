@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  form.pure-form(action="/posts/#{post._id}", method="post")
+    input.pure-input-1(type="text", name="title", value="#{post.title}")
+    input.pure-input-1(type="text", name="slug", value="#{post.slug}", style="margin: 1em 0;")
+    textarea.pure-input-1(name="content", style="margin: 1em 0;", rows="10") #{post.content}
+
+    label(for="featured") featured
+      input(type="checkbox", name="featured", value="featured", (((post.featured) ? 'checked' : undefined)))
+
+    button.pure-button.pure-button-primary(type="submit") Post &raquo;

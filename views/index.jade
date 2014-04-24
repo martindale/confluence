@@ -1,0 +1,21 @@
+extends layout
+
+block content
+
+  //
+    section
+      code #{JSON.stringify(pagination)}
+
+  each post in posts
+    include blocks/post
+
+  section
+    ul.pure-paginator
+      if (pagination && pagination.page < pagination.count)
+        li
+          a.pure-button.prev(href="?page=#{pagination.page + 1}") &laquo; older
+      if (pagination && pagination.page > 1)
+        li
+          a.pure-button.prev(href="?page=#{pagination.page - 1}") newer &raquo;
+
+  hr

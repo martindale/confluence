@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h3 Admin
+  hr
+
+  h4 Controls
+  a.btn.pure-button(href="#", onclick="$.post('/admin/queue', { type: 'sync:facebook' }, function(data){ console.log(data) });") sync facebook
+  a.btn.pure-button(href="#", onclick="$.post('/admin/queue', { type: 'sync:twitter' }, function(data){ console.log(data) });") sync twitter
+  a.btn.pure-button(href="#", onclick="$.post('/admin/queue', { type: 'sync:google' }, function(data){ console.log(data) });") sync google
+  a.btn.pure-button(href="#", onclick="$.post('/admin/queue', { type: 'sync:custom' }, function(data){ console.log(data) });") sync custom
+  
+  hr
+
+  h4 #{merges.length} Potential Mergeables
+  each merge in merges
+    h5 (#{merge.length}) !{merge.map(function(x) { return '<a href="'+x.permalink+'">'+x.title+'</a>'}).join(', ')}
+      |  
+      a.btn(href="#", data-action="merge-posts", data-post-list="#{JSON.stringify(merge.map(function(x) { return x._id; }))}") merge
+  hr
+
+  each post in posts
+    h4
+      a(href="#{post.permalink}") #{post.title} 
+        small #{post.published}
+      |  by 
+      a(href="/#{post._author.slug}") #{post._author.username}

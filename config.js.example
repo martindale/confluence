@@ -1,0 +1,49 @@
+module.exports = {
+  site: {
+      name: 'Your Site Name'
+    , url: 'http://www.root-url-for-site.com/'
+    , tagline: 'something clever here'
+  },
+  http: {
+    port: 3000
+  },
+  database: {
+      name: process.env.CONFLUENCE_DB_NAME || 'confluence-dev'
+    , host: process.env.CONFLUENCE_DB_HOST || 'localhost'
+  },
+  local: {
+      posts:  './_posts'
+    , drafts: './_drafts'
+    , future: false
+  },
+  sessions: {
+      name: 'confluence'
+    , key: 'awesome and spectacularly amazing key that cannot possible ever be cracked'
+    , domain: '.yourdomain.com'
+  },
+  profiles: {
+      google: 'your numberic google id'
+    , twitter: 'twitter username (without @)'
+    , facebook: 'facebook id or username'
+  },
+  providers: {
+      google:   { enabled: false }
+    , twitter:  { enabled: false }
+    , facebook: { enabled: false }
+    , custom:   { enabled: false }
+  },
+  auth: {
+      google: process.env.CONFLUENCE_GOOGLE_KEY || 'google api key here'
+    , facebook: {
+          appID: process.env.CONFLUENCE_FACEBOOK_APP_ID         || 'your app ID'
+        , appSecret: process.env.CONFLUENCE_FACEBOOK_APP_SECRET || 'app secret'
+        , baseURI: process.env.CONFLUENCE_FACEBOOK_BASE_URI     || 'https://graph.facebook.com/'
+      }
+    , twitter: {
+          consumerKey:       process.env.TWITTER_CONSUMER_KEY        || 'key'
+        , consumerSecret:    process.env.TWITTER_CONSUMER_SECRET     || 'secret'
+        , accessTokenKey:    process.env.TWITTER_ACCESS_TOKEN_KEY    || 'user token'
+        , accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET || 'user secret'
+      }
+  }
+}
