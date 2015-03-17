@@ -51,6 +51,11 @@ app.marked = require('marked').setOptions({
   , smartypants: true
 });
 
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.use(express.cookieParser( config.sessions.key ));
 app.use(express.bodyParser());
 app.use(express.methodOverride())
