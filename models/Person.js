@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , ObjectId = mongoose.SchemaTypes.ObjectId
   , passportLocalMongoose = require('passport-local-mongoose')
-  , slug = require('../lib/mongoose-slug');
+  , slug = require('mongoose-slug');
 
 // this defines the fields associated with the model,
 // and moreover, their type.

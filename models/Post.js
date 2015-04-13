@@ -1,9 +1,9 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , ObjectId = mongoose.SchemaTypes.ObjectId
-  , mongooseRedisCache = require("mongoose-redis-cache")
-  , slug = require('../lib/mongoose-slug')
-  , textSearch = require('../lib/mongoose-text-search')
+  , mongooseRedisCache = require('mongoose-redis-cache')
+  , slug = require('mongoose-slug')
+  , textSearch = require('mongoose-text-search')
   , async = require('async')
   , url = require('url');
 

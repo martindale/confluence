@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , ObjectId = mongoose.SchemaTypes.ObjectId
   , mongooseRedisCache = require('mongoose-redis-cache')
-  , slug = require('../lib/mongoose-slug');
+  , slug = require('mongoose-slug');
 
 // this defines the fields associated with the model,
 // and moreover, their type.
