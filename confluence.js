@@ -248,12 +248,17 @@ app.get('/providers/:provider', function(req, res, next) {
 app.get('/:year/:month/:day/:postSlug', app.controllers.posts.single );
 
 app.get('/s/:query', function(req, res, next) {
-  Post.textSearch( req.param('query') , function (err, output) {
+
+  Post.find({
+    $text: { $search: req.param('query') }
+  }, function (err, output) {
+    console.log(output);
+    
     if (err || !output) return console.log(err || 'no results.  output:' + output);
     res.render('search', {
         query: req.param('query')
       , output: output
-      , posts: output.results.map(function(x) { return x.obj; })
+      , posts: output
     });
   });
 });

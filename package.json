@@ -17,7 +17,7 @@
     "maki": "git://github.com/martindale/maki",
     "marked": "~0.3.1",
     "moment": "~2.5.1",
-    "mongoose": "~3.8.8",
+    "mongoose": "^3.8.26",
     "mongoose-agency": "0.0.0",
     "mongoose-redis-cache": "0.0.3",
     "mongoose-slug": "~1.2.0",
