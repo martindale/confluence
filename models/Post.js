@@ -1,11 +1,13 @@
-var mongoose = require('mongoose')
-  , Schema = mongoose.Schema
-  , ObjectId = mongoose.SchemaTypes.ObjectId
-  , mongooseRedisCache = require('mongoose-redis-cache')
-  , slug = require('mongoose-slug')
-  , textSearch = require('mongoose-text-search')
-  , async = require('async')
-  , url = require('url');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var ObjectId = mongoose.SchemaTypes.ObjectId;
+var mongooseRedisCache = require('mongoose-redis-cache');
+var slug = require('mongoose-slug');
+var textSearch = require('mongoose-text-search');
+var async = require('async');
+var url = require('url');
+
+var moment = require('moment');
 
 var ResourceSchema = new Schema({
     id: { type: String }
@@ -59,7 +61,7 @@ PostSchema.virtual('isoDate').get(function() {
   return this.created.toISOString();
 });
 PostSchema.virtual('permalink').get(function() {
-  return '/'+this.published.getFullYear()+'/'+(this.published.getMonth()+1)+'/'+this.published.getDate()+'/'+this.slug;
+  return '/' + moment( this.published ).format('YYYY/MM/DD') + '/'+this.slug;
 });
 
 PostSchema.pre('save', function(next) {
