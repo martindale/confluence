@@ -1,21 +1,15 @@
-var kue = require('kue')
-  , async = require('async')
-  , rest = require('restler')
-  , _ = require('underscore')
-  , redis = require('redis')
-  , marked = require('marked')
-  , Engine = require('./lib/engine');
+var async = require('async');
+var rest = require('restler');
+var _ = require('underscore');
+var redis = require('redis');
+var marked = require('marked');
+var Engine = require('./lib/engine');
 
-var config = require('./config')
-  , db = require('./db');
+var config = require('./config');
+var db = require('./db');
 
-/* kue.redis.createClient = function() {
-  var client = redis.createClient(null, config.redis.host, {
-    auth_pass : config.sessionPass
-  });
-  return client;
-} */
-var jobs = kue.createQueue();
+var Agency = require('mongoose-agency');
+var agency = new Agency( db.source );
 
 var engine = new Engine();
 
@@ -24,21 +18,19 @@ Person       = require('./models/Person').Person;
 Post         = require('./models/Post').Post;
 
 engine.init('martindale', function() {
-  jobs.process( 'multi' , jobProcessor );
+  agency.subscribe( 'multi' , jobProcessor );
 });
 
 var jobProcessor = function(job, done) {
   console.log('processing job...');
-  var data = job.data;
-
-  switch (job.data.type) {
+  switch (job.type) {
     default:
-      console.log('unknown job type "'+ job.data.type +'", calling done()...');
+      console.log('unknown job type "'+ job.type +'", calling done()...');
       done();
     break;
     case 'process:twitter:tweet':
-      var tweet = job.data.data;
-      engine.processTweet( job.data.data , function(err) {
+      var tweet = job.data;
+      engine.processTweet( job.data , function(err) {
         /*/engine.providers.twitter.getTimeline('mentions_timeline', {
             //all: true,
             oldestID: bigint( tweet.id_str )
@@ -63,10 +55,12 @@ var jobProcessor = function(job, done) {
         engine.providers.twitter.get('statuses/retweets/' + tweet.id_str , function(err, retweets) {
           if (retweets) {
             retweets.forEach(function(retweet) {
-              jobs.create('multi', {
+              agency.publish('multi', {
                   type: 'process:twitter:tweet'
                 , data: retweet
-              }).save();
+              }, function(err) {
+                if (err) console.error( err );
+              });
             });
           }
           done( err );
@@ -74,33 +68,37 @@ var jobProcessor = function(job, done) {
       });
     break;
     case 'process:google:comment':
-      engine.processGoogleComment( job.data.data , done );
+      engine.processGoogleComment( job.data , done );
     break;
     case 'process:google:post':
-      engine.processGooglePost( job.data.data , function(err) {
-        jobs.create('multi', {
+      engine.processGooglePost( job.data , function(err) {
+        agency.publish('multi', {
             type: 'sync:google:comments'
-          , data: job.data.data
-        }).save();
+          , data: job.data
+        }, function(err) {
+          if (err) console.error( err );
+        });
         done(err);
       });
     break;
     case 'sync:google:comments':
-      var activity = job.data.data;
+      var activity = job.data;
       engine.providers.google.get('activities/'+activity.id+'/comments', function(err, results) {
         if (results.items) {
           results.items.forEach(function(comment) {
-            jobs.create('multi', {
+            agency.publish('multi', {
                 type: 'process:google:comment'
               , data: comment
-            }).save();
+            }, function(err) {
+              if (err) console.error( err );
+            });
           });
         }
         done( err );
       });
     break;
     case 'process:facebook:post':
-      var item = job.data.data;
+      var item = job.data;
       engine.processFacebookPost( item , function(err) {
         if (item.comments) {
           item.comments.data.forEach(function(comment) {
@@ -109,10 +107,12 @@ var jobProcessor = function(job, done) {
                 id: item.id
               , uri: 'https://www.facebook.com/'+item.from.id+'/posts/'+item.id
             };
-            jobs.create('multi', {
+            agency.publish('multi', {
                 type: 'process:facebook:post'
               , data: comment
-            }).save();
+            }, function(err) {
+              if (err) console.error( err );
+            });
           });
         }
         done(err);
@@ -123,14 +123,21 @@ var jobProcessor = function(job, done) {
           limit: 200
         , all: true
       }, function(err, data) {
-        if (err) { return done(err); }
-        data.data.forEach(function(item) {
-          jobs.create('multi', {
+        if (err) {
+          console.error(err);
+          return done(err);
+        }
+        
+        console.log(data);
+
+        async.each( data.data , function(item, itemComplete) {
+          console.log('item:', item);
+          agency.publish('multi', {
               type: 'process:facebook:post'
             , data: item
-          }).save();
-        });
-        done(err);
+          }, itemComplete );
+        }, done );
+
       });
     break;
     case 'sync:twitter':
@@ -140,10 +147,12 @@ var jobProcessor = function(job, done) {
       }, function(err, tweets) {
         if (err) { return done(err); }
         tweets.forEach(function(tweet) {
-          jobs.create('multi', {
+          agency.publish('multi', {
               type: 'process:twitter:tweet'
             , data: tweet
-          }).save();
+          }, function(err) {
+            if (err) console.error( err );
+          });
         });
         done(err);
       });
@@ -151,10 +160,12 @@ var jobProcessor = function(job, done) {
     case 'sync:google':
       engine.providers.google.getActivities( undefined , function(activities) {
         activities.forEach(function(activity) {
-          jobs.create('multi', {
+          agency.publish('multi', {
               type: 'process:google:post'
             , data: activity
-          }).save();
+          }, function(err) {
+            if (err) console.error( err );
+          });
         });
         done();
       });

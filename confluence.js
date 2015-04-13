@@ -4,7 +4,6 @@
 var database = require('./db');
 var express = require('express');
 var app = express();
-var kue = require('kue');
 var rest = require('restler');
 var mongoose = require('mongoose');
 var flashify = require('flashify');
@@ -16,6 +15,9 @@ var mongooseRedisCache = require('mongoose-redis-cache');
 var RedisStore = require('connect-redis')(express);
 var sessionStore = new RedisStore();
 var marked = require('marked');
+
+var Agency = require('mongoose-agency');
+var agency = new Agency( database.source )
 
 // global config
 config = require('./config');
@@ -40,7 +42,7 @@ app.controllers = {
   , admin:  require('./controllers/admin')
   , people: require('./controllers/people')
 };
-app.jobs   = kue.createQueue();
+app.jobs   = agency;
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');

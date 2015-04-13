@@ -46,9 +46,11 @@ module.exports = {
   },
   schedule: function(req, res, next) {
     console.log(req.param('type'));
-    req.app.jobs.create('multi', {
+    req.app.jobs.publish('multi', {
       type: req.param('type')
-    }).save();
+    }, function(err) {
+      if (err) console.error( err );
+    });
     res.send({ status: 'success', message: 'job type "' + req.param('type') + '" queued successfully' });
   }
 }

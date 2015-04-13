@@ -1,5 +1,9 @@
 var config = require('./config')
 
 var mongoose = require('mongoose');
-mongoose.connect(config.database.host, config.database.name);
-exports.mongoose = mongoose;
+var source = mongoose.connect(config.database.host, config.database.name);
+
+module.exports = {
+  mongoose: mongoose,
+  source: source
+}
