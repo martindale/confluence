@@ -252,8 +252,6 @@ app.get('/s/:query', function(req, res, next) {
   Post.find({
     $text: { $search: req.param('query') }
   }, function (err, output) {
-    console.log(output);
-    
     if (err || !output) return console.log(err || 'no results.  output:' + output);
     res.render('search', {
         query: req.param('query')
