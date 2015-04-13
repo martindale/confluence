@@ -247,7 +247,7 @@ app.get('/:year/:month/:day/:postSlug', app.controllers.posts.single );
 
 app.get('/s/:query', function(req, res, next) {
   Post.textSearch( req.param('query') , function (err, output) {
-    if (err || !output) console.log(err || 'no results.  output:' + output);
+    if (err || !output) return console.log(err || 'no results.  output:' + output);
     res.render('search', {
         query: req.param('query')
       , output: output
