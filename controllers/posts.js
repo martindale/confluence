@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var moment = require('moment');
 
 module.exports = {
   index: function(req, res, next) {
@@ -34,6 +35,12 @@ module.exports = {
   },
   single: function(req, res, next) {
     console.log('request for ' + req.path + ' received')
+
+    var requestedDate = [ req.params.year , req.params.month , req.params.day ].join('/');
+    var date = new Date( requestedDate );
+    var correctString = moment( date ).format('YYYY/MM/DD');
+
+    if (requestedDate !== correctString) return res.redirect( '/' + correctString + '/' + req.params.postSlug );
 
     Post.findOne({
         $or: [
