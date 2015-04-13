@@ -25,6 +25,7 @@ module.exports = {
   },
   profile: function(req, res, next) {
     var query = {};
+    var limit = 20;
 
     Person.findOne({ slug: req.param('usernameSlug') }).exec(function(err, person) {
       if (err) { console.log(err); }
