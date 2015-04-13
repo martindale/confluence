@@ -1,21 +1,21 @@
 /*/ require('debug-trace')({
   always: true
 }); /**/
-var database = require('./db')
-  , express = require('express')
-  , app = express()
-  , kue = require('kue')
-  , rest = require('restler')
-  , mongoose = require('mongoose')
-  , flashify = require('flashify')
-  , passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy
-  , GitHubStrategy = require('passport-github').Strategy
-  , TwitterStrategy = require('passport-twitter')
-  , mongooseRedisCache = require('mongoose-redis-cache')
-  , RedisStore = require('connect-redis')(express)
-  , sessionStore = new RedisStore()
-  , marked = require('marked');
+var database = require('./db');
+var express = require('express');
+var app = express();
+var kue = require('kue');
+var rest = require('restler');
+var mongoose = require('mongoose');
+var flashify = require('flashify');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var GitHubStrategy = require('passport-github').Strategy;
+var TwitterStrategy = require('passport-twitter');
+var mongooseRedisCache = require('mongoose-redis-cache');
+var RedisStore = require('connect-redis')(express);
+var sessionStore = new RedisStore();
+var marked = require('marked');
 
 // global config
 config = require('./config');
