@@ -17,6 +17,16 @@ html(lang="en")
     script(src="/js/jquery.min.js")
     script(src="/js/bootstrap.min.js")
     script(src="/js/maki.js")
+    
+    script.
+      $(document).on('click', '*[data-action=wonder]', function(e) {
+        e.preventDefault();
+        
+        $('.content').toggleClass('hidden');
+        $('.sidebar :not(.control)').toggleClass('hidden');
+        
+        return false;
+      });
 
   body.pure-skin-mine
     .pure-g-r#layout
@@ -63,6 +73,12 @@ html(lang="en")
               li.nav-item
                 a.pure-button.tooltipped(href="bitcoin://131pe2ziMhusE5pbNhfKfzCgGNqhZxZwRB", rel="me", title="Eric Martindale's Wallet in BitCoin'")
                   i.fa.fa-btc
+
+          nav.nav
+            ul.nav-list
+              li.nav-item
+                a.pure-button.control(href="#", data-action="wonder") Wonder &raquo;
+             
 
       .pure-u-1
         .content
