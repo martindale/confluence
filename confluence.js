@@ -213,6 +213,8 @@ app.post('/posts/:postID', function(req, res, next) {
 });
 
 app.get('/:pageSlug', app.controllers.pages.single );
+app.get('/:pageSlug/edit', app.controllers.pages.editForm );
+app.post('/pages/:pageSlug', app.controllers.pages.edit );
 
 app.get('/posts/:postID', function(req, res, next) {
   Post.findOne({ _id: req.param('postID') }).exec(function(err, post) {

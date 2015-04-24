@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  form.pure-form(action="/pages/#{page._id}", method="page")
+    input.pure-input-1(type="text", name="title", value="#{page.title}")
+    input.pure-input-1(type="text", name="slug", value="#{page.slug}", style="margin: 1em 0;")
+    textarea.pure-input-1(name="content", style="margin: 1em 0;", rows="10") #{page.content}
+
+    button.pure-button.pure-button-primary(type="submit") Edit &raquo;
