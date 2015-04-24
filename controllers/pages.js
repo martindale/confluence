@@ -21,7 +21,6 @@ module.exports = {
         page: page
       });
     });
-  }
   },
   edit: function(req, res, next) {
     Page.findOne({ slug: req.param('pageSlug') }).exec(function(err, page) {
