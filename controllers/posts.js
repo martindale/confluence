@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var moment = require('moment');
+var marked = require('marked');
 
 module.exports = {
   index: function(req, res, next) {
@@ -12,13 +13,14 @@ module.exports = {
     Post.paginate( query , {
         limit: limit
       , skip: (req.param('page')) ? (req.param('page') * limit) - limit : 0
+      , sort: '-published'
       , populate: '_author'
     } , function(err, results) {
       res.render('index', {
           posts: results[1].map(function(post) {
             switch (post.markup) {
               case 'markdown':
-                post.content = app.marked( post.content );
+                post.content = marked( post.content );
               break;
             }
             return post;
@@ -62,7 +64,7 @@ module.exports = {
         },
         html: function() {
           if (post.markup == 'markdown') {
-            post.content = app.marked( post.content );
+            post.content = marked( post.content );
           }
 
           res.render('post', {
