@@ -1,3 +1,11 @@
+html {
+  background: black url('/img/wonderous.jpg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: bottom;
+}
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -25,7 +33,6 @@ a:focus {
   bottom: 0;
   width: 25%;
   margin-left: -25%;
-  background: #445533 url('/img/sucked-in.jpg');
   color: #fff;
 }
 
@@ -95,7 +102,18 @@ a:focus {
 
 .content {
   padding: 2em 3em 0;
+  background: white;
 }
+
+.content,
+.sidebar * {
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -ms-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+   opacity: 1;
+}
+
 
 .post {
   padding-bottom: 2em;
@@ -162,6 +180,14 @@ a:focus {
 .footer .pure-menu a:hover,
 .footer .pure-menu a:focus {
   background: none;
+}
+
+.hidden {
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -ms-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+   opacity: 0;
 }
 
 @media (max-width: 767px) {

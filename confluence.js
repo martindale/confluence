@@ -113,9 +113,9 @@ app.locals.markdown = app.marked;
 
 //mongooseRedisCache(mongoose);
 
-app.get('/register',  app.controllers.people.registrationForm );
+//app.get('/register',  app.controllers.people.registrationForm );
 app.get('/login',     app.controllers.people.loginForm );
-app.post('/register', app.controllers.people.register );
+//app.post('/register', app.controllers.people.register );
 app.post('/login',    passport.authenticate('local', {
                           failureRedirect: '/login'
                         , failureFlash: true
@@ -159,14 +159,14 @@ app.get('/stream:restOfPath?', function(req, res, next) {
   res.redirect('/' + path );
 });
 
-app.post('/admin/posts/merge', app.controllers.posts.merge );
-app.get('/admin', app.controllers.admin.index );
-app.post('/admin/queue', app.controllers.admin.schedule );
+app.post('/admin/posts/merge', passport.authenticate('local'), app.controllers.posts.merge );
+app.get('/admin', passport.authenticate('local'), app.controllers.admin.index );
+app.post('/admin/queue', passport.authenticate('local'), app.controllers.admin.schedule );
 
-app.get('/write', function(req, res, next) {
+app.get('/write', passport.authenticate('local'), function(req, res, next) {
   res.render('posts-create');
 });
-app.post('/posts', function(req, res, next) {
+app.post('/posts', passport.authenticate('local'), function(req, res, next) {
   var post = new Post({
       title: req.param('title')
     , content: req.param('content')
@@ -186,7 +186,7 @@ app.post('/posts', function(req, res, next) {
     });
   });
 });
-app.get('/posts/:postID/edit', function(req, res, next) {
+app.get('/posts/:postID/edit', passport.authenticate('local'), function(req, res, next) {
   Post.findOne({ _id: req.param('postID') }).exec(function(err, post) {
     if (err || !post) { return next(); }
     res.render('posts-edit', {
@@ -194,7 +194,7 @@ app.get('/posts/:postID/edit', function(req, res, next) {
     });
   });
 });
-app.post('/posts/:postID', function(req, res, next) {
+app.post('/posts/:postID', passport.authenticate('local'), function(req, res, next) {
   Post.findOne({ _id: req.param('postID') }).exec(function(err, post) {
     if (err || !post) { return next(); }
     post.title   = (req.param('title')) ? req.param('title') : post.title;
@@ -213,6 +213,8 @@ app.post('/posts/:postID', function(req, res, next) {
 });
 
 app.get('/:pageSlug', app.controllers.pages.single );
+app.get('/:pageSlug/edit', passport.authenticate('local'), app.controllers.pages.editForm );
+app.post('/pages/:pageSlug', passport.authenticate('local'), app.controllers.pages.edit );
 
 app.get('/posts/:postID', function(req, res, next) {
   Post.findOne({ _id: req.param('postID') }).exec(function(err, post) {
